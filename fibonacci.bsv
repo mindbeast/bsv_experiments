@@ -1,6 +1,7 @@
 package fibonacci;
 
 import  ClientServer :: *;
+import GetPut::*;
 
 interface FibonacciInterface;
     interface Server #(Bit#(32), Bit#(32)) server;
@@ -44,16 +45,17 @@ endmodule: mkFibonacciGenerator
 
 
 (* synthesize *)
-module mkTestbench(Empty);
+module mkFbTestbench(Empty);
     FibonacciInterface fib <- mkFibonacciGenerator();
     rule kick;
-        fib.server.request.put(10);
+        fib.server.request.put(11);
     endrule
     rule get;
-        Bit#(32) result = fib.server.response.get(10);
+        let result = fib.server.response.get();
         $display("result %d\n", result);
+        $finish(0);
     endrule
-endmodule: mkTestbench
+endmodule: mkFbTestbench
 
 endpackage: fibonacci
 
